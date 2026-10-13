@@ -8,7 +8,7 @@ namespace yefersonProject
     /// date, open, high, low, close, and volume.
     /// </summary>
 
-    internal class aCandlestick
+    internal class Candlestick
     {
 
         public DateTime Date { get; set; }      // Gets or sets the date of the candlestick entry.
@@ -19,10 +19,10 @@ namespace yefersonProject
         public long Volume { get; set; }        // Gets or sets the volume of the candlestick entry.
 
         /// <summary>
-        /// Initializes a new instance of the aCandlestick class by parsing a CSV line containing candlestick data.
+        /// Initializes a new instance of the Candlestick class by parsing a CSV line containing candlestick data.
         /// </summary>
         /// <param name="csvLine"></param>
-        public aCandlestick(string csvLine)
+        public Candlestick(string csvLine)
         {
             // Split the CSV line into values using comma and double quote as delimiters
             char[] delimiterChars = { ',', '"' };
@@ -36,7 +36,7 @@ namespace yefersonProject
             if (values.Length == 6)
             {
                 // Parse the values and assign them to the properties
-                Date = DateTime.Parse(values[0]);   //Get-ChildItem -Path . -Recurse -Filter "Form1.resx" | Unblock-File Date on the first column
+                Date = DateTime.Parse(values[0]);   // Date on the first column
                 Open = decimal.Parse(values[1]);    // Open price on the second column
                 High = decimal.Parse(values[2]);    // High price on the third column
                 Low = decimal.Parse(values[3]);     // Low price on the fourth column

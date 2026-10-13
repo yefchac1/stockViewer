@@ -10,18 +10,18 @@ namespace yefersonProject
     /// containing stock data, filter the data based on a specified date range, and display the filtered results 
     /// in a DataGridView.
     /// </summary>
-    public partial class stockForm : Form
+    public partial class StockForm : Form
     {
         /// <summary>
-        /// A list to hold the candlestick data read from the CSV file. Each aCandlestick object represents 
+        /// A list to hold the candlestick data read from the CSV file. Each Candlestick object represents 
         /// a single candlestick entry with properties for date, open, high, low, close, and volume.
         /// </summary>
-        private List<aCandlestick> candlesticks = new List<aCandlestick>();
+        private List<Candlestick> candlesticks = new List<Candlestick>();
 
         /// <summary>
         /// Initializes a new instance of the stockForm class and sets up the form's components.
         /// </summary>
-        public stockForm()
+        public StockForm()
         {
             InitializeComponent();
         }
@@ -31,10 +31,10 @@ namespace yefersonProject
         /// </summary>
         /// <param name="filePath">The path of the CSV file.</param>
         
-        private List<aCandlestick> ReadStockData(string filePath)
+        private List<Candlestick> ReadStockData(string filePath)
         {
             // Create an empty list to store the candlesticks
-            List<aCandlestick> candlesticks = new List<aCandlestick>();
+            List<Candlestick> candlesticks = new List<Candlestick>();
 
             // Read every line from the CSV file
             var lines = System.IO.File.ReadAllLines(filePath);
@@ -42,7 +42,7 @@ namespace yefersonProject
             // Skip the header and process each stock data line
             foreach (var line in lines.Skip(1))
             {
-                aCandlestick candlestick = new aCandlestick(line);
+                Candlestick candlestick = new Candlestick(line);
 
                 candlesticks.Add(candlestick);
             }
@@ -55,31 +55,32 @@ namespace yefersonProject
         /// </summary>
 
 
-        private void openFileClick(object sender, EventArgs e)
+        private void OpenFileClick(object sender, EventArgs e)
         {
             // Set the initial directory to the "Stock Data" folder relative to the application startup path
-            stockFileDialog.InitialDirectory = System.IO.Path.GetFullPath(
+            StockFileDialog.InitialDirectory = System.IO.Path.GetFullPath(
             System.IO.Path.Combine(Application.StartupPath, @"..\..\..\Stock Data")
             );
 
             // Show the file dialog and check if the user selected a file
-            if (stockFileDialog.ShowDialog() == DialogResult.OK)
+            if (StockFileDialog.ShowDialog() == DialogResult.OK)
             {
-                candlesticks = ReadStockData(stockFileDialog.FileName);
+                candlesticks = ReadStockData(StockFileDialog.FileName);
 
-                filterCandlestickDate();
+                FilterCandlestickDate();
             }
         }
 
         /// <summary>
-        /// Filters the candlestick data based on the selected start and end dates from the date pickers 
-        /// and updates the DataGridView with the filtered results.
+        /// Filters the candlestick data based on the selected start and end dates from the date pickers and
+        /// updates the DataGridView and chart to display only the filtered results. If the end date is earlier than
+        /// the start date, a message box is shown to inform the user.
         /// </summary>
-        private void filterCandlestickDate()
+        private void FilterCandlestickDate()
         {
             // Filter the candlesticks based on the selected start and end dates
-            DateTime startDate = startDatePicker.Value.Date;
-            DateTime endDate = endDatePicker.Value.Date;
+            DateTime startDate = StartDatePicker.Value.Date;
+            DateTime endDate = EndDatePicker.Value.Date;
             // Ensure that the end date is not earlier than the start date
             if (endDate < startDate)
             {
@@ -90,10 +91,27 @@ namespace yefersonProject
             var filteredCandlesticks = candlesticks
                 .Where(c => c.Date.Date >= startDate &&
                             c.Date.Date <= endDate)
+
             // Convert the filtered results to a list for binding to the DataGridView
                 .ToList();
+
             // Bind the filtered candlesticks to the DataGridView for display
-            dataStockViewer.DataSource = filteredCandlesticks;
+            DataStockViewer.DataSource = filteredCandlesticks;
+
+            // Bind the filtered candlesticks to the chart for visualization
+            StockDataChartViewer.DataSource = filteredCandlesticks;
+
+            // Set the X and Y value members for the candlestick series in the chart
+            StockDataChartViewer.Series["PriceSeries"].XValueMember = "Date";
+            StockDataChartViewer.Series["PriceSeries"].YValueMembers = "High, Low, Open, Close";
+
+            // Set the X and Y value members for the volume series in the chart
+            StockDataChartViewer.Series["VolumeSeries"].XValueMember = "Date";
+            StockDataChartViewer.Series["VolumeSeries"].YValueMembers = "Volume";
+
+            // Refresh the chart to reflect the updated data
+            StockDataChartViewer.DataBind();
+
         }
 
         /// <summary>
@@ -101,9 +119,9 @@ namespace yefersonProject
         /// method to filter and update the displayed candlestick data based on the selected date range.
         /// </summary>
 
-        private void updateDate_Click(object sender, EventArgs e)
+        private void UpdateDate_Click(object sender, EventArgs e)
         {
-            filterCandlestickDate();
+            FilterCandlestickDate();
         }
     }
 }

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
@@ -43,8 +44,10 @@
             this.StockFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.UpdateDate = new System.Windows.Forms.Button();
             this.StockDataChartViewer = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.stockFormBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.DataStockViewer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.StockDataChartViewer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stockFormBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // DataStockViewer
@@ -143,18 +146,31 @@
             chartArea1.AxisY.IsStartedFromZero = false;
             chartArea1.AxisY2.IsStartedFromZero = false;
             chartArea1.Name = "PriceArea";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 64F;
+            chartArea1.Position.Width = 94F;
+            chartArea1.Position.X = 3F;
+            chartArea1.Position.Y = 3F;
             chartArea2.AlignWithChartArea = "PriceArea";
             chartArea2.Name = "VolumeArea";
+            chartArea2.Position.Auto = false;
+            chartArea2.Position.Height = 30F;
+            chartArea2.Position.Width = 94F;
+            chartArea2.Position.X = 3F;
+            chartArea2.Position.Y = 68F;
             this.StockDataChartViewer.ChartAreas.Add(chartArea1);
             this.StockDataChartViewer.ChartAreas.Add(chartArea2);
+            this.StockDataChartViewer.DataSource = this.stockFormBindingSource;
             this.StockDataChartViewer.Location = new System.Drawing.Point(13, 12);
             this.StockDataChartViewer.Name = "StockDataChartViewer";
             series1.ChartArea = "PriceArea";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Candlestick;
+            series1.CustomProperties = "PriceDownColor=Red, PriceUpColor=0\\, 192\\, 0";
             series1.Name = "PriceSeries";
             series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Date;
             series1.YValuesPerPoint = 4;
             series2.ChartArea = "VolumeArea";
+            series2.CustomProperties = "PointWidth=0.8";
             series2.Name = "VolumeSeries";
             series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Date;
             this.StockDataChartViewer.Series.Add(series1);
@@ -187,6 +203,7 @@
             this.Text = "Stock Data Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.DataStockViewer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.StockDataChartViewer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.stockFormBindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -203,6 +220,7 @@
         private System.Windows.Forms.OpenFileDialog StockFileDialog;
         private System.Windows.Forms.Button UpdateDate;
         private System.Windows.Forms.DataVisualization.Charting.Chart StockDataChartViewer;
+        private System.Windows.Forms.BindingSource stockFormBindingSource;
     }
 }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace yefersonProject
 {
@@ -21,9 +22,12 @@ namespace yefersonProject
         /// <summary>
         /// Initializes a new instance of the stockForm class and sets up the form's components.
         /// </summary>
-        public StockForm()
+        public StockForm(string filePath)
         {
             InitializeComponent();
+            candlesticks = ReadStockData(filePath);
+            FilterCandlestickDate();
+
         }
 
         /// <summary>
@@ -111,7 +115,6 @@ namespace yefersonProject
 
             // Refresh the chart to reflect the updated data
             StockDataChartViewer.DataBind();
-
         }
 
         /// <summary>

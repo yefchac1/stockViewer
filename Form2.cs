@@ -28,21 +28,21 @@ namespace yefersonProject
             if (openMultipleFilesDialog.ShowDialog() == DialogResult.OK)
             {
                 // Lets put a start date and end date based on the startDateOpener and end
-                
-                //DateTime startDateOpener = startDateOpenerPicker.Value.Date;
-                //DateTime endDateOpener = endDateOpenerPicker.Value.Date;
-                //if (endDateOpener < startDateOpener)
-                //{
-                //    MessageBox.Show("End date cannot be earlier than start date.");
-                //    return;
-                //}
+
+                DateTime startDateOpener = StartDateOpenerPicker.Value.Date;
+                DateTime endDateOpener = EndDateOpenerPicker.Value.Date;
+                if (endDateOpener < startDateOpener)
+                {
+                    MessageBox.Show("End date cannot be earlier than start date.");
+                    return;
+                }
 
                 // Now we will open each instance of new form using each CSV selected
                 foreach (var file in openMultipleFilesDialog.FileNames)
                 {
                     
                     // We will use show dialog for this
-                    StockForm stockForm = new StockForm(file);
+                    StockForm stockForm = new StockForm(file, startDateOpener, endDateOpener);
                     stockForm.Show();
 
                 }

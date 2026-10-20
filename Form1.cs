@@ -22,11 +22,11 @@ namespace yefersonProject
         /// <summary>
         /// Initializes a new instance of the stockForm class and sets up the form's components.
         /// </summary>
-        public StockForm(string filePath)
+        public StockForm(string filePath, DateTime startDate, DateTime endDate)
         {
             InitializeComponent();
             candlesticks = ReadStockData(filePath);
-            FilterCandlestickDate();
+            FilterCandlestickDate(startDate, endDate);
 
         }
 
@@ -71,7 +71,7 @@ namespace yefersonProject
             {
                 candlesticks = ReadStockData(StockFileDialog.FileName);
 
-                FilterCandlestickDate();
+                FilterCandlestickDate(StartDatePicker.Value.Date, EndDatePicker.Value.Date);
             }
         }
 
@@ -80,11 +80,9 @@ namespace yefersonProject
         /// updates the DataGridView and chart to display only the filtered results. If the end date is earlier than
         /// the start date, a message box is shown to inform the user.
         /// </summary>
-        private void FilterCandlestickDate()
+        private void FilterCandlestickDate(DateTime startDate, DateTime endDate)
         {
             // Filter the candlesticks based on the selected start and end dates
-            DateTime startDate = StartDatePicker.Value.Date;
-            DateTime endDate = EndDatePicker.Value.Date;
             // Ensure that the end date is not earlier than the start date
             if (endDate < startDate)
             {
@@ -124,7 +122,7 @@ namespace yefersonProject
 
         private void UpdateDate_Click(object sender, EventArgs e)
         {
-            FilterCandlestickDate();
+            FilterCandlestickDate(StartDatePicker.Value.Date, EndDatePicker.Value.Date);
         }
     }
 }

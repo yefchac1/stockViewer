@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using System.Windows.Forms.DataVisualization.Charting;
 
 namespace yefersonProject
 {
@@ -34,7 +33,7 @@ namespace yefersonProject
         /// Reads stock data from a CSV file and returns a list of aCandlestick objects.
         /// </summary>
         /// <param name="filePath">The path of the CSV file.</param>
-        
+
         private List<Candlestick> ReadStockData(string filePath)
         {
             // Create an empty list to store the candlesticks

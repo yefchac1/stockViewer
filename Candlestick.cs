@@ -8,7 +8,7 @@ namespace yefersonProject
     /// date, open, high, low, close, and volume.
     /// </summary>
 
-    internal class Candlestick
+    public class Candlestick
     {
 
         public DateTime Date { get; set; }      // Gets or sets the date of the candlestick entry.

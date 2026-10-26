@@ -19,7 +19,7 @@ namespace yefersonProject
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormOpener());
+            Application.Run(new MainForm());
         }
     }
 }

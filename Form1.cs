@@ -16,7 +16,7 @@ namespace yefersonProject
         /// A list to hold the candlestick data read from the CSV file. Each Candlestick object represents 
         /// a single candlestick entry with properties for date, open, high, low, close, and volume.
         /// </summary>
-        private List<Candlestick> candlesticks = new List<Candlestick>();
+        private List<aCandlestick> candlesticks = new List<aCandlestick>();
 
         /// <summary>
         /// Initializes a new instance of the stockForm class and sets up the form's components.
@@ -34,10 +34,10 @@ namespace yefersonProject
         /// </summary>
         /// <param name="filePath">The path of the CSV file.</param>
 
-        private List<Candlestick> ReadStockData(string filePath)
+        private List<aCandlestick> ReadStockData(string filePath)
         {
             // Create an empty list to store the candlesticks
-            List<Candlestick> candlesticks = new List<Candlestick>();
+            List<aCandlestick> candlesticks = new List<aCandlestick>();
 
             // Read every line from the CSV file
             var lines = System.IO.File.ReadAllLines(filePath);
@@ -45,7 +45,7 @@ namespace yefersonProject
             // Skip the header and process each stock data line
             foreach (var line in lines.Skip(1))
             {
-                Candlestick candlestick = new Candlestick(line);
+                aCandlestick candlestick = new aCandlestick(line);
 
                 candlesticks.Add(candlestick);
             }
@@ -122,6 +122,31 @@ namespace yefersonProject
         private void UpdateDate_Click(object sender, EventArgs e)
         {
             FilterCandlestickDate(StartDatePicker.Value.Date, EndDatePicker.Value.Date);
+        }
+
+        private void StockForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StartDateLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void StartDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EndDateLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void EndDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

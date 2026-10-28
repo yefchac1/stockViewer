@@ -1,53 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
+using System.Drawing;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace yefersonProject
 {
-    public partial class FormChart : Form
+    public partial class StockChart : Form
     {
 
-        private List<Candlestick> candlesticks = new List<Candlestick>();
-        public FormChart()
+        private List<aCandlestick> candlesticks = new List<aCandlestick>();
+
+        public StockChart()
         {
             InitializeComponent();
-
         }
 
-        public FormChart(string filePath, DateTime startDate, DateTime endDate)
+        public StockChart(string filePath, DateTime startDate, DateTime endDate)
         {
             InitializeComponent();
             candlesticks = CandlestickUtilities.ReadCandlestickFromFiles(filePath);
             candlesticks = CandlestickUtilities.FilterCandlestick(candlesticks, startDate, endDate);
-            candlestickBindingSource.DataSource = candlesticks;
-            dataGridView1.DataSource = candlestickBindingSource;
+            StockViewerChart.DataSource = candlesticks ;
+            
 
+            // Set the X and Y value members for the candlestick series in the chart
+            StockViewerChart.Series["PriceSeries"].XValueMember = "Date";
+            StockViewerChart.Series["PriceSeries"].YValueMembers = "High,Low,Open,Close";
 
+            // Set the X and Y value members for the volume series in the chart
+            StockViewerChart.Series["VolumeSeries"].XValueMember = "Date";
+            StockViewerChart.Series["VolumeSeries"].YValueMembers = "Volume";
+
+            // Refresh the chart to reflect the updated data
+            StockViewerChart.DataBind();
+
+        }
+
+        private void UpdateDate_Click(object sender, EventArgs e)
+        {
+            // We will attach the event handler to the UpdateDate button click event, which will filter the candlestick data based on the selected date range and update the chart accordingly.
+            //Now we will refresh 
+            candlesticks = CandlestickUtilities.FilterCandlestick(candlesticks, newStartDatePicker.Value.Date, newEndDatePicker.Value.Date);
+            StockViewerChart.Refresh();
         }
     }
-
-    public static class CandlestickUtilities
-    {
-        public static List<Candlestick> ReadCandlestickFromFiles(string filePath)
-        {
-            List<Candlestick> candlesticks = new List<Candlestick>();
-            var lines = System.IO.File.ReadAllLines(filePath);
-            foreach (var line in lines.Skip(1))
-            {
-                Candlestick candlestick = new Candlestick(line);
-                candlesticks.Add(candlestick);
-            }
-            return candlesticks;
-        }
-
-        public static List<Candlestick> FilterCandlestick(List<Candlestick> candlesticks, DateTime startDate, DateTime endDate)
-        {
-            var filteredCandlesticks = candlesticks.Where(c => c.Date >= startDate && c.Date <= endDate).ToList();
-            return filteredCandlesticks;
-        }
-    }
-
-
 }
+
+
+
+

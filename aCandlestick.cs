@@ -8,7 +8,7 @@ namespace yefersonProject
     /// date, open, high, low, close, and volume.
     /// </summary>
 
-    public class Candlestick
+    public class aCandlestick
     {
 
         public DateTime Date { get; set; }      // Gets or sets the date of the candlestick entry.
@@ -22,7 +22,7 @@ namespace yefersonProject
         /// Initializes a new instance of the Candlestick class by parsing a CSV line containing candlestick data.
         /// </summary>
         /// <param name="csvLine"></param>
-        public Candlestick(string csvLine)
+        public aCandlestick(string csvLine)
         {
             // Split the CSV line into values using comma and double quote as delimiters
             char[] delimiterChars = { ',', '"' };
@@ -43,6 +43,20 @@ namespace yefersonProject
                 Close = decimal.Parse(values[4]);   // Close price on the fifth column
                 Volume = long.Parse(values[5]);     // Volume on the sixth column
             }
+        }
+        /// <summary>
+        /// This is a copy constructor that initializes a new instance of the aCandlestick class by copying the properties from another 
+        /// aCandlestick instance so it can be used on the aSmartCandlestick class to inherit the properties of the aCandlestick class
+        /// </summary>
+        /// <param name=""></param>
+        public aCandlestick(aCandlestick cs)
+        {
+            Date = cs.Date;
+            Open = cs.Open;
+            High = cs.High;
+            Low = cs.Low;
+            Close = cs.Close;
+            Volume = cs.Volume;
         }
     }
 

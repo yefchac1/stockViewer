@@ -8,9 +8,9 @@ namespace yefersonProject
 {
     public class aSmartCandlestick: aCandlestick
     {
-        int index; // Index of the candlestick in the list
-        bool isPeak; // Indicates if the candlestick is a peak (local maximum)
-        bool isValley; // Indicates if the candlestick is a valley (local minimum)
+        public int index; // Index of the candlestick in the list. Set to public to allow access from other classes, such as FormChart and StockChart.
+        public bool isPeak; // Indicates if the candlestick is a peak (local maximum). Set to public to allow access from other classes, such as FormChart and StockChart.
+        public bool isValley; // Indicates if the candlestick is a valley (local minimum). Set to public to allow access from other classes, such as FormChart and StockChart.
 
         /// <summary>
         /// This cons

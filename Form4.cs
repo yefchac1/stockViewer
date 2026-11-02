@@ -39,7 +39,35 @@ namespace yefersonProject
 
             // Refresh the chart to reflect the updated data
             StockViewerChart.DataBind();
-            
+
+            foreach (aSmartCandlestick scs in smartCandlesticks)
+            {
+                if (scs.isPeak)
+
+                {
+                    TextAnnotation isPeakAnnotation = new TextAnnotation();
+                    isPeakAnnotation.Text = "P";
+                    isPeakAnnotation.ForeColor = Color.DarkGreen;
+                    isPeakAnnotation.AnchorAlignment = ContentAlignment.BottomCenter;
+                    isPeakAnnotation.AnchorDataPoint = StockViewerChart.Series["PriceSeries"].Points[scs.index];
+
+                    StockViewerChart.Annotations.Add(isPeakAnnotation);
+
+
+                }
+                if (scs.isValley)
+                {
+                    TextAnnotation isValleyAnnotation = new TextAnnotation();
+
+                    isValleyAnnotation.Text = "V";
+                    isValleyAnnotation.ForeColor = Color.DarkRed;
+                    isValleyAnnotation.AnchorAlignment = ContentAlignment.TopCenter;
+                    isValleyAnnotation.AnchorDataPoint = StockViewerChart.Series["PriceSeries"].Points[scs.index];
+                    isValleyAnnotation.AnchorY = (double)scs.Low;
+
+                    StockViewerChart.Annotations.Add(isValleyAnnotation);
+                }
+            }
         }
         private void UpdateDate_Click(object sender, EventArgs e)
         {
@@ -48,9 +76,10 @@ namespace yefersonProject
             candlesticks = CandlestickUtilities.FilterCandlestick(candlesticks, newStartDatePicker.Value.Date, newEndDatePicker.Value.Date);
             StockViewerChart.Refresh();
         }
+
         private void StockViewerChart_Click(object sender, EventArgs e)
         {
-
+            
         }
     }
 }

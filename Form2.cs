@@ -36,7 +36,7 @@ namespace yefersonProject
             if (openMultipleFilesDialog.ShowDialog() == DialogResult.OK)
             {
                 selectedFiles = openMultipleFilesDialog.FileNames;
-
+                OpenFilesButton.Focus();
             }
         }
 

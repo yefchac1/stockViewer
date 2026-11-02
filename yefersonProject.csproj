@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="aCandlestick.cs" />
     <Compile Include="aSmartCandlestick.cs" />
+    <Compile Include="CandlestickUtilities.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

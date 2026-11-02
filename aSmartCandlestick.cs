@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace yefersonProject
 {
+    /// <summary>
+    /// This class takes the aCandlestick class and adds additional properties to create a "smart" candlestick, which includes 
+    /// an index, and boolean flags to indicate whether the candlestick is a peak or a valley.
+    /// </summary>
     public class aSmartCandlestick: aCandlestick
     {
         public int index; // Index of the candlestick in the list. Set to public to allow access from other classes, such as FormChart and StockChart.
@@ -13,41 +17,13 @@ namespace yefersonProject
         public bool isValley; // Indicates if the candlestick is a valley (local minimum). Set to public to allow access from other classes, such as FormChart and StockChart.
 
         /// <summary>
-        /// This cons
+        /// This constructor initializes a new instance of the aSmartCandlestick class by copying the properties of an existing 
+        /// aCandlestick object using the base class constructor. It allows for the creation of a smart candlestick from 
+        /// a regular candlestick.
         /// </summary>
         /// <param name="cs"></param>
         public aSmartCandlestick(aCandlestick cs) : base(cs)
         {
-        }
-
-        /// <summary>
-        /// This method converts a list of aCandlestick objects into a list of aSmartCandlestick objects, adding additional properties such as 
-        /// index, isPeak, and isValley to each smart candlestick based on its position in the list and its relationship to neighboring candlesticks.
-        /// </summary>
-        /// <param name="candlesticks"></param>
-        /// <returns></returns>
-        public static List<aSmartCandlestick> ConvertIntoSmartCandlestick(List<aCandlestick> candlesticks)
-        {
-
-            int counter = 0;
-            List<aSmartCandlestick> smartCandlesticks = new List<aSmartCandlestick>();
-            foreach (aCandlestick cs in candlesticks)
-            {
-                aSmartCandlestick scs = new aSmartCandlestick(cs);
-                {
-                    scs.index = counter;
-                    smartCandlesticks.Add(scs);
-                    if(counter >= 2)
-                    {
-                        smartCandlesticks[counter-1].isPeak = smartCandlesticks[counter-2].High < smartCandlesticks[counter - 1].High && smartCandlesticks[counter - 1].High > smartCandlesticks[counter].High;
-                        smartCandlesticks[counter-1].isValley = smartCandlesticks[counter - 2].Low > smartCandlesticks[counter - 1].Low && smartCandlesticks[counter - 1].Low < smartCandlesticks[counter].Low;
-                    }
-                    counter++; // USE ANCHOR DATA POINTS FOR ANNOTATIONS ON CHART-- DONT FORGET. PEAK LETTER P, VALLEY LETTER V AT BOTTOM
-
-                }
-            }
-            
-            return smartCandlesticks;
         }
     }
 }

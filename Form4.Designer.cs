@@ -76,7 +76,6 @@
             this.StockViewerChart.Size = new System.Drawing.Size(1177, 627);
             this.StockViewerChart.TabIndex = 0;
             this.StockViewerChart.Text = "Stock Viewer";
-            this.StockViewerChart.Click += new System.EventHandler(this.StockViewerChart_Click);
             // 
             // UpdateDate
             // 

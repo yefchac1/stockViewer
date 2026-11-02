@@ -6,41 +6,70 @@ using System.Windows.Forms;
 
 namespace yefersonProject
 {
+    /// <summary>
+    /// This class represents a form that displays a table of candlestick data. 
+    /// It allows users to view and filter stock data based on a specified date range.
+    /// </summary>
     public partial class FormChart : Form
     {
-        private List<aCandlestick> candlesticks = new List<aCandlestick>(); // List to hold the candlestick data read from the CSV file. Each aCandlestick object represents a single candlestick entry with properties for date, open, high, low, close, and volume.
-        private List<aSmartCandlestick> smartCandlesticks = new List<aSmartCandlestick>(); // List to hold the smart candlestick data, which includes additional properties such as index, isPeak, and isValley based on the position of each candlestick in the list and its relationship to neighboring candlesticks.
+        private List<aCandlestick> candlesticks = new List<aCandlestick>(); // A list to hold the filtered candlestick data.
+        private List<aCandlestick> totalCandlesticks = new List<aCandlestick>(); // A list to hold all candlestick data read from the CSV file.
+        private List<aSmartCandlestick> smartCandlesticks = new List<aSmartCandlestick>(); // A list to hold the smart candlestick data, which includes additional properties such as index, isPeak, and isValley.
+
+        /// <summary>
+        /// Initializes a new instance of the FormChart class. This constructor is used when no initial data is provided.
+        /// </summary>
         public FormChart()
         {
             InitializeComponent();
         }
+
+        /// <summary>
+        /// This class uses functions from CandlestickUtilities to read candlestick data from a CSV file, filter it based on a specified date range, 
+        /// and convert it into smart candlestick data.
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
         public FormChart(string filePath, DateTime startDate, DateTime endDate)
         {
+            // Initialize the form's components.
             InitializeComponent();
-            candlesticks = CandlestickUtilities.ReadCandlestickFromFiles(filePath);
-            candlesticks = CandlestickUtilities.FilterCandlestick(candlesticks, startDate, endDate);
-            smartCandlesticks = aSmartCandlestick.ConvertIntoSmartCandlestick(candlesticks);
+
+            // Read all candlestick data from the specified CSV file using the ReadCandlestickFromFiles method from CandlestickUtilities.
+            totalCandlesticks = CandlestickUtilities.ReadCandlestickFromFiles(filePath);
+
+            // Filter the candlestick data based on the specified start and end dates using the FilterCandlestick method from CandlestickUtilities.
+            candlesticks = CandlestickUtilities.FilterCandlestick(totalCandlesticks, startDate, endDate);
+
+            // Convert the filtered candlestick data into smart candlestick data, which includes additional properties such as index, isPeak, and isValley.
+            smartCandlesticks = CandlestickUtilities.ConvertIntoSmartCandlestick(candlesticks);
+
+            // Bind the smart candlestick data to the DataGridView for display.
             candlestickBindingSource.DataSource = smartCandlesticks;
+
+            // Refresh the DataGridView to reflect the updated data.
             dataGridView1.DataSource = candlestickBindingSource;
         }
-    }
-    public static class CandlestickUtilities
-    {
-        public static List<aCandlestick> ReadCandlestickFromFiles(string filePath)
+
+        /// <summary>
+        /// Takes the updated dates from StockForm and filters the candlestick data based on the specified start and end dates.
+        /// </summary>
+        /// <param name="startDate"></param>
+        /// <param name="endDate"></param>
+        public void UpdateTable(DateTime startDate, DateTime endDate)
         {
-            List<aCandlestick> candlesticks = new List<aCandlestick>();
-            var lines = System.IO.File.ReadAllLines(filePath);
-            foreach (var line in lines.Skip(1))
-            {
-                aCandlestick candlestick = new aCandlestick(line);
-                candlesticks.Add(candlestick);
-            }
-            return candlesticks;
-        }
-        public static List<aCandlestick> FilterCandlestick(List<aCandlestick> candlesticks, DateTime startDate, DateTime endDate)
-        {
-            var filteredCandlesticks = candlesticks.Where(c => c.Date >= startDate && c.Date <= endDate).ToList();
-            return filteredCandlesticks;
+            // Filter the candlestick data based on dates using the FilterCandlestick method from CandlestickUtilities.
+            candlesticks = CandlestickUtilities.FilterCandlestick(totalCandlesticks, startDate, endDate);
+
+            // Convert the filtered candlestick data into smart candlestick data.
+            smartCandlesticks = CandlestickUtilities.ConvertIntoSmartCandlestick(candlesticks);
+
+            // Bind the updated smart candlestick data to the DataGridView for display.
+            candlestickBindingSource.DataSource = smartCandlesticks;
+
+            // Refresh the DataGridView to reflect the updated data.
+            candlestickBindingSource.ResetBindings(false);
         }
     }
 }

@@ -123,30 +123,5 @@ namespace yefersonProject
         {
             FilterCandlestickDate(StartDatePicker.Value.Date, EndDatePicker.Value.Date);
         }
-
-        private void StockForm_Load(object sender, EventArgs e)
-        {
-
-        }
-
-        private void StartDateLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void StartDatePicker_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void EndDateLabel_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void EndDatePicker_ValueChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }

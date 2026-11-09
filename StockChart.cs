@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -21,6 +22,10 @@ namespace yefersonProject
         private List<aCandlestick> totalCandlesticks = new List<aCandlestick>(); // A list to hold all candlestick data read from the CSV file.
         private List<aSmartCandlestick> smartCandlesticks = new List<aSmartCandlestick>(); // A list to hold the smart candlestick data, which includes additional properties such as index, isPeak, and isValley.
         private FormChart stockDataTableForm; // A reference to the FormChart instance that displays the candlestick data in a table format. This allows for updating the table when the chart is updated.
+        private bool isDragging = false; // A flag to indicate whether the user is currently selecting a range on the chart.
+        private Point startPoint; // The starting point of the selection on the chart.
+        private Point currentPoint; // The ending point of the selection on the chart.
+        private Rectangle selectedRectangle; // A rectangle representing the selected area on the chart, defined by the start and end points of the selection.
 
         /// <summary>
         /// Initializes the StockChart form and sets up the chart with the provided stock data, date range, and a reference to the FormChart instance for updating the table.
@@ -144,6 +149,53 @@ namespace yefersonProject
             if (stockDataTableForm != null && !stockDataTableForm.IsDisposed)
             {
                 stockDataTableForm.UpdateTable(newStartDate, newEndDate);
+            }
+        }
+        private void StockViewerChart_MouseDown(object sender, MouseEventArgs e)
+        {
+            isDragging = true;
+            startPoint = e.Location;
+            currentPoint = e.Location;
+            selectedRectangle = Rectangle.Empty;
+            StockViewerChart.Invalidate(); 
+        }
+        private void StockViewerChart_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                currentPoint = e.Location;
+                selectedRectangle = GetRectangle(startPoint, currentPoint);
+                StockViewerChart.Invalidate();
+            }
+        }
+        private void StockViewerChart_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (isDragging)
+            {
+                isDragging = false;
+                StockViewerChart.Invalidate(); 
+            }
+        }
+        private Rectangle GetRectangle(Point p1, Point p2)
+        {
+            int x = Math.Min(p1.X, p2.X);
+            int y = Math.Min(p1.Y, p2.Y);
+            int w = Math.Abs(p1.X - p2.X);
+            int h = Math.Abs(p1.Y - p2.Y);
+            return new Rectangle(x, y, w, h);
+        }
+
+        private void StockViewerChart_Paint(object sender, PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            if(selectedRectangle != Rectangle.Empty)
+            {
+                using (Pen pen = new Pen(Color.Red, 1))
+                {
+                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    e.Graphics.DrawRectangle(pen, selectedRectangle);
+                }
             }
         }
     }

@@ -59,8 +59,8 @@
             chartArea2.Position.Y = 70F;
             this.StockViewerChart.ChartAreas.Add(chartArea1);
             this.StockViewerChart.ChartAreas.Add(chartArea2);
-            this.StockViewerChart.Location = new System.Drawing.Point(11, 9);
-            this.StockViewerChart.Margin = new System.Windows.Forms.Padding(2);
+            this.StockViewerChart.Location = new System.Drawing.Point(15, 11);
+            this.StockViewerChart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StockViewerChart.Name = "StockViewerChart";
             series1.ChartArea = "StockArea";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Candlestick;
@@ -73,17 +73,21 @@
             series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Date;
             this.StockViewerChart.Series.Add(series1);
             this.StockViewerChart.Series.Add(series2);
-            this.StockViewerChart.Size = new System.Drawing.Size(1177, 627);
+            this.StockViewerChart.Size = new System.Drawing.Size(1569, 772);
             this.StockViewerChart.TabIndex = 0;
             this.StockViewerChart.Text = "Stock Viewer";
+            this.StockViewerChart.Paint += new System.Windows.Forms.PaintEventHandler(this.StockViewerChart_Paint);
+            this.StockViewerChart.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StockViewerChart_MouseDown);
+            this.StockViewerChart.MouseMove += new System.Windows.Forms.MouseEventHandler(this.StockViewerChart_MouseMove);
+            this.StockViewerChart.MouseUp += new System.Windows.Forms.MouseEventHandler(this.StockViewerChart_MouseUp);
             // 
             // UpdateDate
             // 
             this.UpdateDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold);
-            this.UpdateDate.Location = new System.Drawing.Point(1229, 333);
-            this.UpdateDate.Margin = new System.Windows.Forms.Padding(2);
+            this.UpdateDate.Location = new System.Drawing.Point(1639, 410);
+            this.UpdateDate.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.UpdateDate.Name = "UpdateDate";
-            this.UpdateDate.Size = new System.Drawing.Size(110, 60);
+            this.UpdateDate.Size = new System.Drawing.Size(147, 74);
             this.UpdateDate.TabIndex = 12;
             this.UpdateDate.Text = "Update Date";
             this.UpdateDate.UseVisualStyleBackColor = true;
@@ -93,9 +97,10 @@
             // 
             this.EndDateLabel.AutoSize = true;
             this.EndDateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.EndDateLabel.Location = new System.Drawing.Point(1198, 291);
+            this.EndDateLabel.Location = new System.Drawing.Point(1597, 358);
+            this.EndDateLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.EndDateLabel.Name = "EndDateLabel";
-            this.EndDateLabel.Size = new System.Drawing.Size(73, 18);
+            this.EndDateLabel.Size = new System.Drawing.Size(90, 22);
             this.EndDateLabel.TabIndex = 11;
             this.EndDateLabel.Text = "End Date:";
             // 
@@ -103,9 +108,10 @@
             // 
             this.StartDateLabel.AutoSize = true;
             this.StartDateLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.StartDateLabel.Location = new System.Drawing.Point(1193, 260);
+            this.StartDateLabel.Location = new System.Drawing.Point(1591, 320);
+            this.StartDateLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.StartDateLabel.Name = "StartDateLabel";
-            this.StartDateLabel.Size = new System.Drawing.Size(78, 18);
+            this.StartDateLabel.Size = new System.Drawing.Size(96, 22);
             this.StartDateLabel.TabIndex = 10;
             this.StartDateLabel.Text = "Start Date:";
             // 
@@ -114,11 +120,12 @@
             this.newEndDatePicker.CustomFormat = "MM/dd/yyyy";
             this.newEndDatePicker.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.newEndDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.newEndDatePicker.Location = new System.Drawing.Point(1280, 289);
+            this.newEndDatePicker.Location = new System.Drawing.Point(1707, 356);
+            this.newEndDatePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.newEndDatePicker.MaxDate = new System.DateTime(2026, 12, 31, 0, 0, 0, 0);
             this.newEndDatePicker.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
             this.newEndDatePicker.Name = "newEndDatePicker";
-            this.newEndDatePicker.Size = new System.Drawing.Size(97, 23);
+            this.newEndDatePicker.Size = new System.Drawing.Size(128, 27);
             this.newEndDatePicker.TabIndex = 9;
             this.newEndDatePicker.Value = new System.DateTime(2026, 9, 18, 0, 0, 0, 0);
             // 
@@ -127,26 +134,27 @@
             this.newStartDatePicker.CustomFormat = "MM/dd/yyyy";
             this.newStartDatePicker.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.newStartDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.newStartDatePicker.Location = new System.Drawing.Point(1280, 258);
+            this.newStartDatePicker.Location = new System.Drawing.Point(1707, 318);
+            this.newStartDatePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.newStartDatePicker.MaxDate = new System.DateTime(2026, 12, 31, 0, 0, 0, 0);
             this.newStartDatePicker.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
             this.newStartDatePicker.Name = "newStartDatePicker";
-            this.newStartDatePicker.Size = new System.Drawing.Size(97, 23);
+            this.newStartDatePicker.Size = new System.Drawing.Size(128, 27);
             this.newStartDatePicker.TabIndex = 8;
             this.newStartDatePicker.Value = new System.DateTime(2026, 6, 1, 0, 0, 0, 0);
             // 
             // StockChart
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1390, 647);
+            this.ClientSize = new System.Drawing.Size(1853, 796);
             this.Controls.Add(this.UpdateDate);
             this.Controls.Add(this.EndDateLabel);
             this.Controls.Add(this.StartDateLabel);
             this.Controls.Add(this.newEndDatePicker);
             this.Controls.Add(this.newStartDatePicker);
             this.Controls.Add(this.StockViewerChart);
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "StockChart";
             this.Text = "Stock Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.StockViewerChart)).EndInit();

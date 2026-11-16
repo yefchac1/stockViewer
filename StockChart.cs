@@ -27,6 +27,19 @@ namespace yefersonProject
         private Point currentPoint; // The ending point of the selection on the chart.
         private Rectangle selectedRectangle; // A rectangle representing the selected area on the chart, defined by the start and end points of the selection.
 
+        private class SnapPoint
+        {
+            public Point position;
+            public int index;
+            public bool isValley;
+
+
+        }
+        private List<SnapPoint> snapPoints = new List<SnapPoint>(); // A list to hold snap points for the selection on the chart, which can be used for snapping the selection to specific data points.
+        private int startIndex = -1; // The index of the starting point of the selection in the smart candlestick data. Initialized to -1 to indicate that no selection has been made yet.
+        private bool startsAtValley = false; // A flag to indicate whether the selection starts at a valley in the smart candlestick data. This is used to determine how to handle the selection when it is made.
+        private const int snapThreshold = 15; // A constant value representing the threshold distance for snapping the selection to a specific data point on the chart. If the selection is within this distance from a data point, it will snap to that point.
+
         /// <summary>
         /// Initializes the StockChart form and sets up the chart with the provided stock data, date range, and a reference to the FormChart instance for updating the table.
         /// </summary>
@@ -151,14 +164,98 @@ namespace yefersonProject
                 stockDataTableForm.UpdateTable(newStartDate, newEndDate);
             }
         }
+        private void SnapPointsToSelection()
+        {
+            snapPoints.Clear();
+
+            ChartArea area = StockViewerChart.ChartAreas["StockArea"];
+            Series series = StockViewerChart.Series["PriceSeries"];
+
+            for (int i = 0; i < smartCandlesticks.Count &&
+                   i < series.Points.Count; i++)
+            {
+                aSmartCandlestick candle = smartCandlesticks[i];
+
+                if (!candle.isPeak && !candle.isValley)
+                    continue;
+
+                int x = (int)area.AxisX.ValueToPixelPosition(
+                    series.Points[i].XValue);
+
+                if (candle.isPeak)
+                {
+                    int y = (int)area.AxisY.ValueToPixelPosition(
+                        (double)candle.High);
+
+                    snapPoints.Add(new SnapPoint
+                    {
+                        position = new Point(x, y),
+                        index = i,
+                        isValley = false
+                    });
+                }
+
+                if (candle.isValley)
+                {
+                    int y = (int)area.AxisY.ValueToPixelPosition(
+                        (double)candle.Low);
+
+                    snapPoints.Add(new SnapPoint
+                    {
+                        position = new Point(x, y),
+                        index = i,
+                        isValley = true
+                    });
+
+
+                } }
+        }
+
+
         private void StockViewerChart_MouseDown(object sender, MouseEventArgs e)
         {
-            isDragging = true;
-            startPoint = e.Location;
-            currentPoint = e.Location;
+            if (e.Button != MouseButtons.Left)
+                return;
+
+            SnapPoint closest = null;
+            int bestDistance = snapThreshold * snapThreshold;
+
+            foreach (SnapPoint point in snapPoints)
+            {
+                int dx = e.X - point.position.X;
+                int dy = e.Y - point.position.Y;
+                int distance = dx * dx + dy * dy;
+
+                if (distance <= bestDistance)
+                {
+                    bestDistance = distance;
+                    closest = point;
+                }
+            }
+
+            if (closest != null)
+            {
+                // Valid starting point: snap to peak or valley.
+                startIndex = closest.index;
+                startsAtValley = closest.isValley;
+                startPoint = closest.position;
+            }
+            else
+            {
+                // Invalid starting point: allow drawing without snapping.
+                startIndex = -1;
+                startsAtValley = false;
+                startPoint = e.Location;
+            }
+
+            currentPoint = startPoint;
             selectedRectangle = Rectangle.Empty;
-            StockViewerChart.Invalidate(); 
+            isDragging = true;
+
+            StockViewerChart.Invalidate();
         }
+
+
         private void StockViewerChart_MouseMove(object sender, MouseEventArgs e)
         {
             if (isDragging)
@@ -172,8 +269,11 @@ namespace yefersonProject
         {
             if (isDragging)
             {
+                currentPoint = e.Location;
+                selectedRectangle = GetRectangle(startPoint, currentPoint);
+
                 isDragging = false;
-                StockViewerChart.Invalidate(); 
+                StockViewerChart.Invalidate();
             }
         }
         private Rectangle GetRectangle(Point p1, Point p2)
@@ -185,15 +285,45 @@ namespace yefersonProject
             return new Rectangle(x, y, w, h);
         }
 
+        /// <summary>
+        /// Checks whether the selected rectangle represents
+        /// a valid upward or downward stock movement.
+        /// </summary>
+
+        /// <summary>
+        /// Checks whether the rectangle started at a peak or valley.
+        /// </summary>
+        private bool IsValidSegment()
+        {
+            return startIndex >= 0 &&
+                   selectedRectangle.Width > 0 &&
+                   selectedRectangle.Height > 0;
+        }
+
         private void StockViewerChart_Paint(object sender, PaintEventArgs e)
         {
             base.OnPaint(e);
 
-            if(selectedRectangle != Rectangle.Empty)
+            SnapPointsToSelection();
+
+            if (selectedRectangle != Rectangle.Empty)
             {
-                using (Pen pen = new Pen(Color.Red, 1))
+                // Purple temporarily represents an invalid segment.
+                Color rectangleColor = Color.White;
+
+                if (IsValidSegment())
                 {
-                    pen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+                    rectangleColor = startsAtValley
+                        ? Color.Green
+                        : Color.Red;
+                }
+
+                using (Pen pen = new Pen(rectangleColor, 3))
+                {
+                    pen.DashStyle = isDragging
+                        ? System.Drawing.Drawing2D.DashStyle.Dash
+                        : System.Drawing.Drawing2D.DashStyle.Solid;
+
                     e.Graphics.DrawRectangle(pen, selectedRectangle);
                 }
             }

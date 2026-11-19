@@ -12,7 +12,7 @@ namespace yefersonProject
     /// </summary>
     public class aSmartCandlestick: aCandlestick
     {
-        public int index; // Index of the candlestick in the list. Set to public to allow access from other classes, such as FormChart and StockChart.
+        public int index { get; set; } // Index of the candlestick in the list. Set to public to allow access from other classes, such as FormChart and StockChart.
         public bool isPeak; // Indicates if the candlestick is a peak (local maximum). Set to public to allow access from other classes, such as FormChart and StockChart.
         public bool isValley; // Indicates if the candlestick is a valley (local minimum). Set to public to allow access from other classes, such as FormChart and StockChart.
 

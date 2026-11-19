@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -74,12 +75,12 @@ namespace yefersonProject
             StockViewerChart.DataSource = smartCandlesticks;
 
             // Set the X value member for the price series in the chart to the "Date" property of the smart candlestick data.
-            StockViewerChart.Series["PriceSeries"].XValueMember = "Date";
+            StockViewerChart.Series["PriceSeries"].XValueMember = "index";
             // Set the Y value members for the price series in the chart to the "High", "Low", "Open", and "Close" properties of the smart candlestick data.
             StockViewerChart.Series["PriceSeries"].YValueMembers = "High,Low,Open,Close";
 
             // Set the X value member for the volume series in the chart to the "Date" property of the smart candlestick data.
-            StockViewerChart.Series["VolumeSeries"].XValueMember = "Date";
+            StockViewerChart.Series["VolumeSeries"].XValueMember = "index";
             // Set the Y value member for the volume series in the chart to the "Volume" property of the smart candlestick data.
             StockViewerChart.Series["VolumeSeries"].YValueMembers = "Volume";
 
@@ -87,7 +88,7 @@ namespace yefersonProject
             StockViewerChart.DataBind();
 
             // Update the annotations for peaks and valleys in the chart based on the smart candlestick data.
-            UpdateAnnotations(); 
+            UpdateAnnotations();
         }
         /// <summary>
         /// Updates the annotations on the StockViewerChart to display peaks and valleys in the smart candlestick data.
@@ -102,9 +103,9 @@ namespace yefersonProject
             {
                 // If the current smart candlestick is identified as a peak, create a text annotation to mark it on the chart.
                 if (scs.isPeak)
-                {   
+                {
                     // Properties of the annotation are set to display "P" in dark green color, anchored to the corresponding data point on the chart.
-                    TextAnnotation isPeakAnnotation = new TextAnnotation(); 
+                    TextAnnotation isPeakAnnotation = new TextAnnotation();
                     isPeakAnnotation.Text = "P";
                     isPeakAnnotation.ForeColor = Color.DarkGreen;
                     isPeakAnnotation.AnchorAlignment = ContentAlignment.BottomCenter;
@@ -208,7 +209,8 @@ namespace yefersonProject
                     });
 
 
-                } }
+                }
+            }
         }
 
 
@@ -251,6 +253,10 @@ namespace yefersonProject
             currentPoint = startPoint;
             selectedRectangle = Rectangle.Empty;
             isDragging = true;
+
+            // Now we will show the actual price of our starting point in the chart. We will use the Y value of the starting point to get the corresponding price from the smart candlestick data.
+
+
 
             StockViewerChart.Invalidate();
         }
@@ -302,21 +308,15 @@ namespace yefersonProject
 
         private void StockViewerChart_Paint(object sender, PaintEventArgs e)
         {
-            base.OnPaint(e);
-
             SnapPointsToSelection();
 
-            if (selectedRectangle != Rectangle.Empty)
+            if (selectedRectangle != Rectangle.Empty && selectedRectangle.Width > 0 && selectedRectangle.Height > 0)
             {
-                // Purple temporarily represents an invalid segment.
-                Color rectangleColor = Color.White;
+                bool valid = IsValidSegment();
 
-                if (IsValidSegment())
-                {
-                    rectangleColor = startsAtValley
-                        ? Color.Green
-                        : Color.Red;
-                }
+                Color rectangleColor = valid
+                    ? (startsAtValley ? Color.Green : Color.Red)
+                    : Color.White;
 
                 using (Pen pen = new Pen(rectangleColor, 3))
                 {
@@ -326,7 +326,42 @@ namespace yefersonProject
 
                     e.Graphics.DrawRectangle(pen, selectedRectangle);
                 }
+
+                // Draw Fibonacci lines whenever we snapped to a valid start candle (even while dragging)
+                if (startIndex >= 0 && startIndex < smartCandlesticks.Count)
+                {
+                    ChartArea priceArea = StockViewerChart.ChartAreas[0]; // Verify this is your Price ChartArea
+                    Axis axisY = priceArea.AxisY;
+
+                    double startingPrice = startsAtValley
+                        ? (double)smartCandlesticks[startIndex].Low
+                        : (double)smartCandlesticks[startIndex].High;
+
+                    // Clamp currentPoint.Y inside the Y-axis range so PixelPositionToValue never errors out
+                    double topPixel = axisY.ValueToPixelPosition(axisY.Maximum);
+                    double bottomPixel = axisY.ValueToPixelPosition(axisY.Minimum);
+                    double clampedY = Math.Max(topPixel, Math.Min(bottomPixel, currentPoint.Y));
+
+                    // Always use currentPoint.Y for endingPrice so it moves dynamically with the mouse
+                    double endingPrice = axisY.PixelPositionToValue(clampedY);
+
+                    double[] ratios = { 0.0, 0.236, 0.382, 0.5, 0.618, 0.786, 1.0 };
+
+                    using (Pen fibPen = new Pen(Color.OrangeRed, 1.2f))
+                    {
+                        fibPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
+
+                        foreach (double ratio in ratios)
+                        {
+                            double levelPrice = startingPrice + (endingPrice - startingPrice) * ratio;
+                            float y = (float)axisY.ValueToPixelPosition(levelPrice);
+
+                            e.Graphics.DrawLine(fibPen, selectedRectangle.Left, y, selectedRectangle.Right, y);
+                        }
+                    }
+                }
             }
         }
+
     }
 }

@@ -66,11 +66,10 @@
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Candlestick;
             series1.CustomProperties = "PriceDownColor=Red, PriceUpColor=0\\, 192\\, 0";
             series1.Name = "PriceSeries";
-            series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Date;
             series1.YValuesPerPoint = 4;
             series2.ChartArea = "VolumeArea";
             series2.Name = "VolumeSeries";
-            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Date;
+            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
             this.StockViewerChart.Series.Add(series1);
             this.StockViewerChart.Series.Add(series2);
             this.StockViewerChart.Size = new System.Drawing.Size(1569, 772);
@@ -121,7 +120,7 @@
             this.newEndDatePicker.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.newEndDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.newEndDatePicker.Location = new System.Drawing.Point(1707, 356);
-            this.newEndDatePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.newEndDatePicker.Margin = new System.Windows.Forms.Padding(4);
             this.newEndDatePicker.MaxDate = new System.DateTime(2026, 12, 31, 0, 0, 0, 0);
             this.newEndDatePicker.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
             this.newEndDatePicker.Name = "newEndDatePicker";
@@ -135,7 +134,7 @@
             this.newStartDatePicker.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.newStartDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.newStartDatePicker.Location = new System.Drawing.Point(1707, 318);
-            this.newStartDatePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.newStartDatePicker.Margin = new System.Windows.Forms.Padding(4);
             this.newStartDatePicker.MaxDate = new System.DateTime(2026, 12, 31, 0, 0, 0, 0);
             this.newStartDatePicker.MinDate = new System.DateTime(2020, 1, 1, 0, 0, 0, 0);
             this.newStartDatePicker.Name = "newStartDatePicker";

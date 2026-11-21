@@ -43,6 +43,9 @@
             // 
             // StockViewerChart
             // 
+            chartArea1.AxisX.IntervalOffset = 0.5D;
+            chartArea1.AxisX.Minimum = -0.5D;
+            chartArea1.AxisX2.Minimum = -0.5D;
             chartArea1.AxisY.IsStartedFromZero = false;
             chartArea1.Name = "StockArea";
             chartArea1.Position.Auto = false;

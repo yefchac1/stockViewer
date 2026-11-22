@@ -7,7 +7,10 @@ namespace yefersonProject
     /// Copilot generated several comments throughout the solution, while ChatGPT was used for debugging and implementation
     /// of a dynamic initial directory for the open file dialog in Project 1, as well as the implementation of a date range filter
     /// for the candlestick data. In Project 2, ChatGPT was also used to implement the functionality of closing the application when the user clicks 
-    /// the "X" button on both the StockForm and MainForm, ensuring that all resources are properly released and the application exits gracefully.
+    /// the "X" button on both the StockForm and MainForm, ensuring that all resources are properly released and the application exits gracefully. In
+    /// Project 3, Google Gemini was used when Googling questions like "how do i convert from mouse location to chart point in a candlestick chart in
+    /// Visual Studio C# Windows Forms using Microsoft Documentation", which gave me an AI sumamry with a good response. Also, Copilot was used for
+    /// new comments.
     /// </summary>
 
     internal static class Program

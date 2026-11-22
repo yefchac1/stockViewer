@@ -28,53 +28,74 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.StockViewerChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.UpdateDate = new System.Windows.Forms.Button();
             this.EndDateLabel = new System.Windows.Forms.Label();
             this.StartDateLabel = new System.Windows.Forms.Label();
             this.newEndDatePicker = new System.Windows.Forms.DateTimePicker();
             this.newStartDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.BoxTouches = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.StockViewerChart)).BeginInit();
             this.SuspendLayout();
             // 
             // StockViewerChart
             // 
-            chartArea1.AxisX.IntervalOffset = 0.5D;
-            chartArea1.AxisX.Minimum = -0.5D;
-            chartArea1.AxisX2.Minimum = -0.5D;
-            chartArea1.AxisY.IsStartedFromZero = false;
-            chartArea1.Name = "StockArea";
-            chartArea1.Position.Auto = false;
-            chartArea1.Position.Height = 65F;
-            chartArea1.Position.Width = 94F;
-            chartArea1.Position.X = 3F;
-            chartArea1.Position.Y = 3F;
-            chartArea2.AlignWithChartArea = "StockArea";
-            chartArea2.Name = "VolumeArea";
-            chartArea2.Position.Auto = false;
-            chartArea2.Position.Height = 30F;
-            chartArea2.Position.Width = 94F;
-            chartArea2.Position.X = 3F;
-            chartArea2.Position.Y = 70F;
-            this.StockViewerChart.ChartAreas.Add(chartArea1);
-            this.StockViewerChart.ChartAreas.Add(chartArea2);
+            chartArea3.AxisX.IntervalOffset = 0.5D;
+            chartArea3.AxisX.Minimum = -0.5D;
+            chartArea3.AxisX2.Minimum = -0.5D;
+            chartArea3.AxisY.IsStartedFromZero = false;
+            chartArea3.Name = "StockArea";
+            chartArea3.Position.Auto = false;
+            chartArea3.Position.Height = 65F;
+            chartArea3.Position.Width = 94F;
+            chartArea3.Position.X = 3F;
+            chartArea3.Position.Y = 3F;
+            chartArea4.AlignWithChartArea = "StockArea";
+            chartArea4.AxisX.IntervalOffset = 0.5D;
+            chartArea4.AxisX.Minimum = -0.5D;
+            chartArea4.AxisX2.IntervalOffset = 0.5D;
+            chartArea4.AxisX2.Minimum = -0.5D;
+            chartArea4.Name = "VolumeArea";
+            chartArea4.Position.Auto = false;
+            chartArea4.Position.Height = 30F;
+            chartArea4.Position.Width = 94F;
+            chartArea4.Position.X = 3F;
+            chartArea4.Position.Y = 70F;
+            this.StockViewerChart.ChartAreas.Add(chartArea3);
+            this.StockViewerChart.ChartAreas.Add(chartArea4);
             this.StockViewerChart.Location = new System.Drawing.Point(15, 11);
             this.StockViewerChart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.StockViewerChart.Name = "StockViewerChart";
-            series1.ChartArea = "StockArea";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Candlestick;
-            series1.CustomProperties = "PriceDownColor=Red, PriceUpColor=0\\, 192\\, 0";
-            series1.Name = "PriceSeries";
-            series1.YValuesPerPoint = 4;
-            series2.ChartArea = "VolumeArea";
-            series2.Name = "VolumeSeries";
-            series2.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
-            this.StockViewerChart.Series.Add(series1);
-            this.StockViewerChart.Series.Add(series2);
+            series5.ChartArea = "StockArea";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Candlestick;
+            series5.CustomProperties = "PriceDownColor=Red, PriceUpColor=0\\, 192\\, 0";
+            series5.Name = "PriceSeries";
+            series5.YValuesPerPoint = 4;
+            series6.ChartArea = "VolumeArea";
+            series6.Name = "VolumeSeries";
+            series6.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32;
+            series7.ChartArea = "StockArea";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series7.Color = System.Drawing.Color.Green;
+            series7.IsVisibleInLegend = false;
+            series7.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series7.Name = "PeakDots";
+            series8.ChartArea = "StockArea";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Point;
+            series8.Color = System.Drawing.Color.DarkRed;
+            series8.IsVisibleInLegend = false;
+            series8.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+            series8.Name = "ValleyDots";
+            this.StockViewerChart.Series.Add(series5);
+            this.StockViewerChart.Series.Add(series6);
+            this.StockViewerChart.Series.Add(series7);
+            this.StockViewerChart.Series.Add(series8);
             this.StockViewerChart.Size = new System.Drawing.Size(1569, 772);
             this.StockViewerChart.TabIndex = 0;
             this.StockViewerChart.Text = "Stock Viewer";
@@ -145,11 +166,25 @@
             this.newStartDatePicker.TabIndex = 8;
             this.newStartDatePicker.Value = new System.DateTime(2026, 6, 1, 0, 0, 0, 0);
             // 
+            // BoxTouches
+            // 
+            this.BoxTouches.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.BoxTouches.Location = new System.Drawing.Point(1618, 272);
+            this.BoxTouches.Name = "BoxTouches";
+            this.BoxTouches.ReadOnly = true;
+            this.BoxTouches.Size = new System.Drawing.Size(205, 22);
+            this.BoxTouches.TabIndex = 13;
+            this.BoxTouches.TabStop = false;
+            this.BoxTouches.Text = "Touches: 0";
+            this.BoxTouches.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // StockChart
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(1853, 796);
+            this.Controls.Add(this.BoxTouches);
             this.Controls.Add(this.UpdateDate);
             this.Controls.Add(this.EndDateLabel);
             this.Controls.Add(this.StartDateLabel);
@@ -173,5 +208,6 @@
         private System.Windows.Forms.Label StartDateLabel;
         private System.Windows.Forms.DateTimePicker newEndDatePicker;
         private System.Windows.Forms.DateTimePicker newStartDatePicker;
+        private System.Windows.Forms.TextBox BoxTouches;
     }
 }
